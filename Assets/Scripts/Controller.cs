@@ -1,35 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class Controller : MonoBehaviour
+{
 
-	float hspeed = 1f;
-	float velocity = 1f;
-	float direction = 1f;
-    float YMaxVelocity = 100f;
-    float XMaxVelocity = 100f;
+    public float direction = 1f;
 
-	void Start ()
-	{
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		if( Input.GetButtonDown("Jump") )
-		{
-			direction = direction * -1;
-		}
+    private float hcap = 50f;
+    private float vcap = 30f;
+    private Vector2 acceleration = new Vector2(0, 1f);
 
-        rigidbody2D.AddForce(new Vector2(hspeed, velocity * direction));
+    void Start()
+    {
+        rigidbody2D.velocity = new Vector2(hcap, 0);
+    }
 
-        if (rigidbody2D.velocity.y > YMaxVelocity)
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetButtonDown("Jump"))
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * 0.99f);
+            direction = direction * -1;
         }
-        if (rigidbody2D.velocity.x > XMaxVelocity)
+        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y) + acceleration * direction;
+
+        if( rigidbody2D.velocity.y > vcap)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.99f, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, vcap);
         }
-	}
+        else if ( rigidbody2D.velocity.y < -vcap)
+        {
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -vcap);
+        }
+    }
 }
