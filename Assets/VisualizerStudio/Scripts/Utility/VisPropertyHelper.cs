@@ -86,7 +86,12 @@ public enum GameObjectProperty
 	/// <summary>
 	/// The game object z scale. 
 	/// </summary>
-	ZScale
+	ZScale,
+
+    /// <summary>
+    /// The game object's trail renderer's start width
+    /// </summary>
+    TrailWidth
 }
 
 public enum EmitterProperty
@@ -259,6 +264,10 @@ public static class VisPropertyHelper
                     gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 
 							                                   	  gameObject.transform.localScale.y, 
 							                                   	  propertyValue);
+                break;
+            case GameObjectProperty.TrailWidth:
+                if (gameObject.transform)
+                    gameObject.transform.GetComponent<TrailRenderer>().startWidth = propertyValue;
                 break;
             default:
                 break;
