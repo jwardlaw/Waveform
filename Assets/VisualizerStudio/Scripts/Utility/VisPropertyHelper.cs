@@ -89,6 +89,11 @@ public enum GameObjectProperty
 	ZScale,
 
     /// <summary>
+    /// The game object's Y offset from its parent. 
+    /// </summary>
+    YParentOffset,
+
+    /// <summary>
     /// The game object's trail renderer's start width
     /// </summary>
     TrailWidth
@@ -146,8 +151,10 @@ public static class VisPropertyHelper
     /// <param name="gameObject">The game object whose properties are to be set.</param>
     /// <param name="targetProperty">The target property to set.</param>
     /// <param name="propertyValue">The value to set the target property to.</param>
+    /// 
     public static void SetGameObjectProperty(GameObject gameObject, GameObjectProperty targetProperty, float propertyValue)
 	{
+        GameObject player = GameObject.Find("Player");
 		//check if the game object is null
 		if (gameObject == null)
 		{
@@ -265,9 +272,15 @@ public static class VisPropertyHelper
 							                                   	  gameObject.transform.localScale.y, 
 							                                   	  propertyValue);
                 break;
+            case GameObjectProperty.YParentOffset:
+                if (gameObject.transform)
+                    gameObject.transform.position = new Vector3(player.transform.position.x,
+                                                                player.transform.position.y + Mathf.Pow(propertyValue, 2),
+                                                                0f);
+                break;
             case GameObjectProperty.TrailWidth:
                 if (gameObject.transform)
-                    gameObject.transform.GetComponent<TrailRenderer>().startWidth = propertyValue;
+                    gameObject.transform.GetComponent<TrailRenderer>().startWidth = Mathf.Pow(propertyValue, 2);
                 break;
             default:
                 break;
