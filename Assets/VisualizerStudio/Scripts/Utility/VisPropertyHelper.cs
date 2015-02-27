@@ -142,12 +142,34 @@ public enum AnimationStateProperty
 
 #endregion
 
+class ExponentialMovingAverage
+{
+    private float expdecay = 0.5f;
+    private float oldValue;
+    public ExponentialMovingAverage(float alpha)
+    {
+        this.expdecay = expdecay;
+    }
+
+    public double average(float value)
+    {
+        if (oldValue == null)
+        {
+            oldValue = value;
+            return value;
+        }
+        float newValue = oldValue + expdecay * (value - oldValue);
+        oldValue = newValue;
+        return newValue;
+    }
+}
+
 /// <summary>
 /// This static class is used to provide helper functions for Visualizer Studio. 
 /// </summary>
 public static class VisPropertyHelper
-{		
-    #region Setter Functions
+{
+      #region Setter Functions
 
     /// <summary>
     /// This function is used to help set basic properties on a game object
@@ -160,6 +182,7 @@ public static class VisPropertyHelper
     public static void SetGameObjectProperty(GameObject gameObject, GameObjectProperty targetProperty, float propertyValue)
 	{
         GameObject player = GameObject.Find("Player");
+        ExponentialMovingAverage trailAvg = new ExponentialMovingAverage(0.5f);
 		//check if the game object is null
 		if (gameObject == null)
 		{
@@ -279,15 +302,31 @@ public static class VisPropertyHelper
                 break;
             case GameObjectProperty.YParentOffset1:
                 if (gameObject.transform)
+                {
+                    float smoothpVal;
+                    smoothpVal = (float)trailAvg.average(propertyValue);
                     gameObject.transform.position = new Vector3(player.transform.position.x,
-                                                                player.transform.position.y + Mathf.Pow(propertyValue, 2),
+                                                                player.transform.position.y + smoothpVal,
                                                                 0f);
+                }
+                    /*gameObject.transform.position = new Vector3(player.transform.position.x,
+                                                                player.transform.position.y + 10*Mathf.Sin(propertyValue),
+                                                                0f);
+                     */
                 break;
             case GameObjectProperty.YParentOffset2:
                 if (gameObject.transform)
+                {
+                    float smoothpVal;
+                    smoothpVal = (float)trailAvg.average(propertyValue);
                     gameObject.transform.position = new Vector3(player.transform.position.x,
-                                                                player.transform.position.y - Mathf.Pow(propertyValue, 2),
+                                                                player.transform.position.y - smoothpVal,
                                                                 0f);
+                }
+                    /*gameObject.transform.position = new Vector3(player.transform.position.x,
+                                                                player.transform.position.y - 10*Mathf.Sin(propertyValue),
+                                                                0f);
+                     */
                 break;
             case GameObjectProperty.TrailWidth:
                 if (gameObject.transform)
