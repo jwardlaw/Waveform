@@ -91,7 +91,12 @@ public enum GameObjectProperty
     /// <summary>
     /// The game object's Y offset from its parent. 
     /// </summary>
-    YParentOffset,
+    YParentOffset1,
+
+    /// <summary>
+    /// The game object's Y offset from its parent. 
+    /// </summary>
+    YParentOffset2,
 
     /// <summary>
     /// The game object's trail renderer's start width
@@ -272,10 +277,16 @@ public static class VisPropertyHelper
 							                                   	  gameObject.transform.localScale.y, 
 							                                   	  propertyValue);
                 break;
-            case GameObjectProperty.YParentOffset:
+            case GameObjectProperty.YParentOffset1:
                 if (gameObject.transform)
                     gameObject.transform.position = new Vector3(player.transform.position.x,
                                                                 player.transform.position.y + Mathf.Pow(propertyValue, 2),
+                                                                0f);
+                break;
+            case GameObjectProperty.YParentOffset2:
+                if (gameObject.transform)
+                    gameObject.transform.position = new Vector3(player.transform.position.x,
+                                                                player.transform.position.y - Mathf.Pow(propertyValue, 2),
                                                                 0f);
                 break;
             case GameObjectProperty.TrailWidth:
