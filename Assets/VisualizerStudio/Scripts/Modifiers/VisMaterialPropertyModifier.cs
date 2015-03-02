@@ -129,6 +129,7 @@ public class VisMaterialPropertyModifier : VisBasePropertyModifier
     {
         //create var to store target material
         Material targetMaterial = null;
+        Material[] targetMaterials = null;
 
         //get the target material
         if (setAsProceduralMaterial &&
@@ -249,6 +250,18 @@ public class VisMaterialPropertyModifier : VisBasePropertyModifier
                                                  clampedValue,
                                                  targetMaterial.color.a);
                             targetMaterial.color = newColor;
+                            break;
+                        case "tcolor":
+                            targetMaterials = gameObject.transform.GetComponent<TrailRenderer>().renderer.materials;
+                            for(int i = 0; i < gameObject.transform.GetComponent<TrailRenderer>().renderer.materials.Length; i++)
+                            {
+                                clampedValue = Mathf.Clamp(propertyValue, 0.0f, 1.0f);
+                                newColor = new Color(clampedValue,
+                                                     clampedValue,
+                                                     clampedValue,
+                                                     targetMaterial.color.a);
+                                targetMaterials[i].color = newColor;
+                            }
                             break;
                         default:
                             //set float
