@@ -10,9 +10,10 @@ public class WF_PlayController : MonoBehaviour
     private float vcap = 50f;
     private Vector2 acceleration = new Vector2(0, 1.6f);
 
+
     void Start()
     {
-        rigidbody2D.velocity = new Vector2(hcap, 0);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(hcap, 0);
     }
 
     // Update is called once per frame
@@ -22,15 +23,24 @@ public class WF_PlayController : MonoBehaviour
         {
             direction = direction * -1;
         }
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y) + acceleration * direction;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y) + acceleration * direction;
 
-        if (rigidbody2D.velocity.y > vcap)
+        if (GetComponent<Rigidbody2D>().velocity.y > vcap)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, vcap);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, vcap);
         }
-        else if (rigidbody2D.velocity.y < -vcap)
+        else if (GetComponent<Rigidbody2D>().velocity.y < -vcap)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -vcap);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, -vcap);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if(coll.tag == "Finish")
+        {
+            Application.LoadLevel(0);
+        }
+            WF_ScoreTracker.score -= 1;
     }
 }

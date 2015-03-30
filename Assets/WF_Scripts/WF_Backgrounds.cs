@@ -13,7 +13,7 @@ public class WF_Backgrounds : MonoBehaviour
 
     void Update()
     {
-        if( player.transform.position.x > (lastJump * 630f))
+        if( player.transform.position.x > (lastJump * 631f))
         {
             gameObject.transform.position = new Vector3(player.transform.position.x, 0, 0);
             lastJump++;

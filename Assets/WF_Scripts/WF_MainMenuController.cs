@@ -19,22 +19,22 @@ public class WF_MainMenuController : MonoBehaviour
 
     void Start()
     {
-        rigidbody2D.velocity = new Vector2(hcap, 0);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(hcap, 0);
         InvokeRepeating("Switch", delay, switchrate);
     }
 
     // Update is called once per frame
     void Update()
     {
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y) + acceleration * direction;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y) + acceleration * direction;
 
-        if (rigidbody2D.velocity.y > vcap)
+        if (GetComponent<Rigidbody2D>().velocity.y > vcap)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, vcap);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, vcap);
         }
-        else if (rigidbody2D.velocity.y < -vcap)
+        else if (GetComponent<Rigidbody2D>().velocity.y < -vcap)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -vcap);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, -vcap);
         }
     }
 }
